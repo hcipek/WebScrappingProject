@@ -21,9 +21,9 @@ def start_scrapping():
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
 
-    service = Service(ChromeDriverManager().install())
+    service = Service('./webdriver/chromedriver')
 
-    driver: WebDriver = webdriver.Chrome(Variables.DRIVER_PATH, chrome_options=options)
+    driver: WebDriver = webdriver.Chrome(service=service, chrome_options=options)
 
     wait = WebDriverWait(driver, Variables.WAIT_SECONDS)
 
