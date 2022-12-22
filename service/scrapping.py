@@ -17,11 +17,13 @@ from variables import ScrappingVariables as Variables
 
 def start_scrapping():
     options = Options()
-    options.add_argument("start-maximized")
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
 
     service = Service(ChromeDriverManager().install())
 
-    driver: WebDriver = webdriver.Chrome(service=service, options=options)
+    driver: WebDriver = webdriver.Chrome(Variables.DRIVER_PATH, options=options)
 
     wait = WebDriverWait(driver, Variables.WAIT_SECONDS)
 
