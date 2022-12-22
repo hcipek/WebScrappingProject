@@ -23,7 +23,7 @@ def start_scrapping():
 
     service = Service(ChromeDriverManager().install())
 
-    driver: WebDriver = webdriver.Chrome(Variables.DRIVER_PATH, options=options)
+    driver: WebDriver = webdriver.Chrome(Variables.DRIVER_PATH, chrome_options=options)
 
     wait = WebDriverWait(driver, Variables.WAIT_SECONDS)
 
