@@ -53,36 +53,18 @@ class MijnFreelanceScrappingService(BaseScrappingService):
         self.driver.get(Variables.TARGET_WEBSITE)
 
     def login_to_website(self) -> None:
-        login_form = None
+        login_form = self.find_safely(By.CSS_SELECTOR, Variables.LOGIN_FORM_UL_ELEMENT_CSS_SELECTOR)
+        self.find_safely(By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR)
+        self.find_safely(By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR)
+        self.find_safely(By.CSS_SELECTOR, Variables.LOGIN_REMEMBER_ME_CSS_SELECTOR)
+        self.find_safely(By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR)
 
-        try:
-            self.wait.until(
-                expected_conditions.presence_of_element_located(
-                    (By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR))
-            )
-            self.wait.until(
-                expected_conditions.presence_of_element_located(
-                    (By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR))
-            )
-            self.wait.until(
-                expected_conditions.presence_of_element_located(
-                    (By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR))
-            )
-            self.wait.until(
-                expected_conditions.presence_of_element_located(
-                    (By.CSS_SELECTOR, Variables.LOGIN_REMEMBER_ME_CSS_SELECTOR))
-            )
-            login_form = self.wait.until(
-                expected_conditions.presence_of_element_located(
-                    (By.CSS_SELECTOR, Variables.LOGIN_FORM_UL_ELEMENT_CSS_SELECTOR))
-            )
-        finally:
-            email_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR) \
-                .find_element(By.TAG_NAME, Tags.INPUT)
-            email_input.send_keys(Variables.AUTH_USERNAME)
-            password_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR) \
-                .find_element(By.TAG_NAME, Tags.INPUT)
-            password_input.send_keys(Variables.AUTH_PASSWORD)
+        email_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR) \
+            .find_element(By.TAG_NAME, Tags.INPUT)
+        email_input.send_keys(Variables.AUTH_USERNAME)
+        password_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR) \
+            .find_element(By.TAG_NAME, Tags.INPUT)
+        password_input.send_keys(Variables.AUTH_PASSWORD)
 
         login_button = self.driver.find_element(By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR)
         self.wait.until(
