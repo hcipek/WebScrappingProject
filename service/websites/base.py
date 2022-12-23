@@ -65,12 +65,12 @@ class BaseScrappingService(ABC):
         while True and retry_count < Variables.MAX_RETRY_COUNT:
             try:
                 return self.wait.until(expected_conditions.presence_of_element_located((by, value)))
-            except (TimeoutException, NoSuchElementException) as ex:
+            except (TimeoutException, NoSuchElementException):
                 if retry_count > Variables.MAX_RETRY_COUNT:
                     logging.warning("Couldn't find the element by", by, "of", value)
                     raise UnsafeElementException
                 retry_count += 1
-                logging.warning('Exception happened, retry count =', retry_count)
+                logging.warning('Exception happened, retry count = {}'.format(retry_count))
                 self.driver.refresh()
 
     @abstractmethod
