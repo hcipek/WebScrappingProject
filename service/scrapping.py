@@ -18,13 +18,11 @@ from variables import ScrappingVariables as Variables
 
 
 def start_scrapping():
+    # TODO: Display only required for VM's without actual display. Comment below 2 lines at local work
     display = Display()
     display.start()
 
     options = Options()
-    # options.add_argument('--no-sandbox')
-    # options.add_argument('--headless')
-    # options.add_argument('--disable-dev-shm-usage')
 
     service = Service(ChromeDriverManager().install())
 
@@ -32,7 +30,8 @@ def start_scrapping():
 
     wait = WebDriverWait(driver, Variables.WAIT_SECONDS)
 
-    scrapping_services: list[BaseScrappingService] = [MijnFreelanceScrappingService(driver, wait)]
+    scrapping_services: list[BaseScrappingService] = [HarveyNashScrappingService(driver, wait),
+                                                      MijnFreelanceScrappingService(driver, wait)]
 
     vacancies_repository = VacanciesRepository()
     content_html = Variables.MAIL_HEADER
@@ -42,7 +41,7 @@ def start_scrapping():
         content_html = handle_mail_context(html_context=content_html, item_list=vacancies,
                                            service_name=service.get_name())
         vacancies_repository.insert_vacancies(vacancies)
-
+    # TODO : Comment this when you need to run it on locally
     display.stop()
 
     mail_service = MailService()
