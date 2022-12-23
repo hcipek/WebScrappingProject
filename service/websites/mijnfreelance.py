@@ -59,23 +59,20 @@ class MijnFreelanceScrappingService(BaseScrappingService):
         self.find_safely(By.CSS_SELECTOR, Variables.LOGIN_REMEMBER_ME_CSS_SELECTOR)
         self.find_safely(By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR)
 
-        try:
-            email_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR) \
-                .find_element(By.TAG_NAME, Tags.INPUT)
-            email_input.click()
-            email_input.send_keys(Variables.AUTH_USERNAME)
-            password_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR) \
-                .find_element(By.TAG_NAME, Tags.INPUT)
-            password_input.click()
-            password_input.send_keys(Variables.AUTH_PASSWORD)
+        email_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR) \
+            .find_element(By.TAG_NAME, Tags.INPUT)
+        email_input.click()
+        email_input.send_keys(Variables.AUTH_USERNAME)
+        password_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR) \
+            .find_element(By.TAG_NAME, Tags.INPUT)
+        password_input.click()
+        password_input.send_keys(Variables.AUTH_PASSWORD)
 
-            login_button = self.driver.find_element(By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR)
-            self.wait.until(
-                expected_conditions.element_to_be_clickable(login_button)
-            )
-            login_button.click()
-        except ElementClickInterceptedException:
-            self.driver.save_screenshot('error')
+        login_button = self.driver.find_element(By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR)
+        self.wait.until(
+            expected_conditions.element_to_be_clickable(login_button)
+        )
+        login_button.click()
 
     def handle_cookies(self) -> None:
         logging.info('handle cookies started')

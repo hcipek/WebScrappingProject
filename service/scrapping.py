@@ -1,8 +1,12 @@
+import logging
+import base64
+
 from datetime import datetime
 
 from pyvirtualdisplay import Display
 
 from selenium import webdriver
+from selenium.common import ElementClickInterceptedException, NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -36,10 +40,16 @@ def start_scrapping():
     content_html = Variables.MAIL_HEADER
 
     for service in scrapping_services:
-        vacancies = service.get_vacancies()
-        content_html = handle_mail_context(html_context=content_html, item_list=vacancies,
-                                           service_name=service.get_name())
-        vacancies_repository.insert_vacancies(vacancies)
+        try:
+            vacancies = service.get_vacancies()
+            content_html = handle_mail_context(html_context=content_html, item_list=vacancies,
+                                               service_name=service.get_name())
+            vacancies_repository.insert_vacancies(vacancies)
+        except (ElementClickInterceptedException, NoSuchElementException, TimeoutException):
+            is_saved = driver.save_screenshot('error.png')
+            logging.warning('Screenshot is saved = {}', is_saved)
+            content_html = handle_error_context(html_context=content_html, screenshot_address='./error.png',
+                                                service_name=service.get_name())
     # TODO : Comment this when you need to run it on locally
     display.stop()
 
@@ -51,4 +61,13 @@ def start_scrapping():
 def handle_mail_context(html_context: str, item_list: [], service_name: str) -> str:
     print(len(item_list), 'Vacancies found')
     html_context += Variables.MAIL_DETAIL.format(len(item_list), service_name)
+    return html_context
+
+
+def handle_error_context(html_context: str, screenshot_address: str, service_name: str):
+    data_uri = base64.b64encode(open(screenshot_address, 'rb').read()).decode('utf-8')
+
+    img_tag = '<img src="data:image/png;base64,{0}">'.format(data_uri)
+
+    html_context += img_tag + '\n'
     return html_context
