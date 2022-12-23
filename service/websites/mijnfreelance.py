@@ -69,7 +69,9 @@ class MijnFreelanceScrappingService(BaseScrappingService):
             password_input.send_keys(Variables.AUTH_PASSWORD)
 
         login_button = self.driver.find_element(By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR)
-
+        self.wait.until(
+            expected_conditions.element_to_be_clickable(login_button)
+        )
         login_button.click()
 
     def handle_cookies(self) -> None:
@@ -82,6 +84,9 @@ class MijnFreelanceScrappingService(BaseScrappingService):
 
         for button in all_cookie_buttons:
             if button.get_attribute(Variables.COOKIE_ACTION_ATTRIBUTE_NAME) == Variables.COOKIE_ACTION_ATTRIBUTE_VALUE:
+                self.wait.until(
+                    expected_conditions.element_to_be_clickable(button)
+                )
                 button.click()
                 logging.info('handle cookies finished')
                 break
@@ -94,6 +99,9 @@ class MijnFreelanceScrappingService(BaseScrappingService):
         pick_match_filter = filter_form.find_element(By.CLASS_NAME, Variables.FILTER_CHOOSE_MAIN_CONTAINER_CLASS_NAME)
 
         dropdown = pick_match_filter.find_element(By.CLASS_NAME, Variables.FILTER_CHOOSE_CLASS_NAME)
+        self.wait.until(
+            expected_conditions.element_to_be_clickable(dropdown)
+        )
         dropdown.click()
         # Then Click Nieuw... filter option on the list
         dropdown_ul = dropdown.find_element(By.TAG_NAME, Tags.UL)
@@ -102,6 +110,9 @@ class MijnFreelanceScrappingService(BaseScrappingService):
 
         for element in dropdown_list:
             if element.text == Variables.FILTER_NIEUW_NAME:
+                self.wait.until(
+                    expected_conditions.element_to_be_clickable(element)
+                )
                 element.click()
                 break
 
@@ -112,6 +123,9 @@ class MijnFreelanceScrappingService(BaseScrappingService):
                 (By.CSS_SELECTOR, Variables.FILTER_EXPERTISEGEBIEDEN_MAIN_CSS_SELECTOR))
         )
         # Open Expertisegebieden Option
+        self.wait.until(
+            expected_conditions.element_to_be_clickable(expertisegebieden_filter)
+        )
         expertisegebieden_filter.click()
 
         expertisegebieden_form_element = self.wait.until(
@@ -128,11 +142,17 @@ class MijnFreelanceScrappingService(BaseScrappingService):
             h3_element = option_group.find_element(By.TAG_NAME, Tags.H3)
 
             if h3_element.accessible_name == Variables.FILTER_EXPERTISEGEBIEDEN_REQUIRED_OPTION_NAME:
+                self.wait.until(
+                    expected_conditions.element_to_be_clickable(h3_element)
+                )
                 h3_element.click()
 
                 wait_for_loading_popup(self.wait)
                 break
         # Close Expertisegebieden Option
+        self.wait.until(
+            expected_conditions.element_to_be_clickable(expertisegebieden_filter)
+        )
         expertisegebieden_filter.click()
         # For Less Time Consumption
         if Variables.FILTER_SINCE_LAST_LOGIN_ACTIVE:
@@ -144,6 +164,9 @@ class MijnFreelanceScrappingService(BaseScrappingService):
         time.sleep(Variables.TIME_SLEEP_VALUE)
 
         since_button = self.driver.find_element(By.CSS_SELECTOR, Variables.FILTER_SINCE_CSS_SELECTOR)
+        self.wait.until(
+            expected_conditions.element_to_be_clickable(since_button)
+        )
         since_button.click()
         time.sleep(1)
 
@@ -152,6 +175,9 @@ class MijnFreelanceScrappingService(BaseScrappingService):
         for option in option_list:
             if option.get_attribute(Variables.FILTER_SINCE_OPTION_ATTRIBUTE_NAME) == \
                     Variables.FILTER_SINCE_OPTION_ATTRIBUTE_VALUE:
+                self.wait.until(
+                    expected_conditions.element_to_be_clickable(option)
+                )
                 option.click()
 
                 wait_for_loading_popup(self.wait)
@@ -185,7 +211,9 @@ class MijnFreelanceScrappingService(BaseScrappingService):
             except NoSuchElementException:
                 logging.warning('Pagination Next was not found.')
                 break
-
+            self.wait.until(
+                expected_conditions.element_to_be_clickable(next_button)
+            )
             next_button.click()
 
         logging.info('navigate all pages ended')
