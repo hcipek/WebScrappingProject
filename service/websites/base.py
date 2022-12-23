@@ -22,6 +22,8 @@ class BaseScrappingService(ABC):
     def get_vacancies(self) -> list[Vacancy]:
         self.set_website()
 
+        time.sleep(self.sleep)
+
         self.login_to_website()
 
         time.sleep(self.sleep)
