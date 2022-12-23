@@ -13,6 +13,7 @@ from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.webdriver.support.wait import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
+from exception.exception import UnsafeElementException
 from service.notification.mail import MailService
 from repo.vacancy import VacanciesRepository
 from service.websites.base import BaseScrappingService
@@ -34,8 +35,9 @@ def start_scrapping():
 
     wait = WebDriverWait(driver, Variables.WAIT_SECONDS)
 
-    scrapping_services: list[BaseScrappingService] = [HarveyNashScrappingService(driver=driver, wait=wait),
-                                                      MijnFreelanceScrappingService(driver=driver, wait=wait)]
+    scrapping_services: list[BaseScrappingService] = [
+        HarveyNashScrappingService(driver=driver, wait=wait),
+        MijnFreelanceScrappingService(driver=driver, wait=wait)]
 
     vacancies_repository = VacanciesRepository()
     content_html = Variables.MAIL_HEADER
@@ -46,9 +48,9 @@ def start_scrapping():
             content_html = handle_mail_context(html_context=content_html, item_list=vacancies,
                                                service_name=service.get_name())
             vacancies_repository.insert_vacancies(vacancies)
-        except (ElementClickInterceptedException, NoSuchElementException, TimeoutException):
+        except (ElementClickInterceptedException, NoSuchElementException, TimeoutException, UnsafeElementException):
             is_saved = driver.save_screenshot('error.png')
-            logging.warning('Screenshot is saved = {}'.format(is_saved))
+            logging.warning('Screenshot is saved =', is_saved)
             content_html = handle_error_context(html_context=content_html, screenshot_address='./error.png',
                                                 service_name=service.get_name())
     # TODO : Comment this when you need to run it on locally
