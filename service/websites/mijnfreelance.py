@@ -56,24 +56,33 @@ class MijnFreelanceScrappingService(BaseScrappingService):
         login_form = None
 
         try:
+            self.wait.until(
+                expected_conditions.presence_of_element_located(
+                    (By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR))
+            )
+            self.wait.until(
+                expected_conditions.presence_of_element_located(
+                    (By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR))
+            )
+            self.wait.until(
+                expected_conditions.presence_of_element_located(
+                    (By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR))
+            )
+            self.wait.until(
+                expected_conditions.presence_of_element_located(
+                    (By.CSS_SELECTOR, Variables.LOGIN_REMEMBER_ME_CSS_SELECTOR))
+            )
             login_form = self.wait.until(
                 expected_conditions.presence_of_element_located(
                     (By.CSS_SELECTOR, Variables.LOGIN_FORM_UL_ELEMENT_CSS_SELECTOR))
             )
-        except TimeoutException:
-            logging.error('Timeout reached!')
-
-        email_input = self.wait.until(
-            expected_conditions.presence_of_element_located((By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR))
-        )
-        email_input = email_input.find_element(By.TAG_NAME, Tags.INPUT)
-        self.wait.until(
-            expected_conditions.element_to_be_clickable(email_input)
-        )
-        email_input.send_keys(Variables.AUTH_USERNAME)
-        password_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR) \
-            .find_element(By.TAG_NAME, Tags.INPUT)
-        password_input.send_keys(Variables.AUTH_PASSWORD)
+        finally:
+            email_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_EMAIL_CSS_SELECTOR) \
+                .find_element(By.TAG_NAME, Tags.INPUT)
+            email_input.send_keys(Variables.AUTH_USERNAME)
+            password_input = login_form.find_element(By.CSS_SELECTOR, Variables.LOGIN_PASSWORD_CSS_SELECTOR) \
+                .find_element(By.TAG_NAME, Tags.INPUT)
+            password_input.send_keys(Variables.AUTH_PASSWORD)
 
         login_button = self.driver.find_element(By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR)
         self.wait.until(
