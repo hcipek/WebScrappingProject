@@ -34,7 +34,8 @@ def start_scrapping():
 
     wait = WebDriverWait(driver, Variables.WAIT_SECONDS)
 
-    scrapping_services: list[BaseScrappingService] = [MijnFreelanceScrappingService(driver, wait)]
+    scrapping_services: list[BaseScrappingService] = [HarveyNashScrappingService(driver=driver, wait=wait),
+                                                      MijnFreelanceScrappingService(driver=driver, wait=wait)]
 
     vacancies_repository = VacanciesRepository()
     content_html = Variables.MAIL_HEADER
@@ -67,7 +68,7 @@ def handle_mail_context(html_context: str, item_list: [], service_name: str) -> 
 def handle_error_context(html_context: str, screenshot_address: str, service_name: str):
     data_uri = base64.b64encode(open(screenshot_address, 'rb').read()).decode('utf-8')
 
-    img_tag = '<img src="data:image/png;base64,{0}">'.format(data_uri)
+    img_tag = '<img src="data:image/png;base64,{}">'.format(data_uri)
 
     html_context += img_tag + '\n'
     return html_context
