@@ -30,8 +30,7 @@ def start_scrapping():
 
     wait = WebDriverWait(driver, Variables.WAIT_SECONDS)
 
-    scrapping_services: list[BaseScrappingService] = [HarveyNashScrappingService(driver, wait),
-                                                      MijnFreelanceScrappingService(driver, wait)]
+    scrapping_services: list[BaseScrappingService] = [MijnFreelanceScrappingService(driver, wait)]
 
     vacancies_repository = VacanciesRepository()
     content_html = Variables.MAIL_HEADER
