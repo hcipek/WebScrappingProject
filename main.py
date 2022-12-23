@@ -8,6 +8,4 @@ from service.scrapping import start_scrapping
 client = google.cloud.logging.Client()
 client.setup_logging()
 
-logging.basicConfig(format='%(asctime)s %(levelname)s:%(message)s', level=logging.INFO)
-
 start_scrapping()

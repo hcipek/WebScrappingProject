@@ -1,6 +1,7 @@
 ### How to Run at VM's like GCP CE or AWS EC2
 
 Install Python 3
+Install xvfb
 Install Pip
 - Install selenium
 - Install pyvirtualdisplay
