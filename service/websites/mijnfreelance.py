@@ -67,9 +67,16 @@ class MijnFreelanceScrappingService(BaseScrappingService):
         password_input.send_keys(Variables.AUTH_PASSWORD)
 
         login_button = self.driver.find_element(By.CSS_SELECTOR, Variables.LOGIN_BUTTON_CSS_SELECTOR)
+        logging.info(login_button.is_enabled())
+        logging.info(login_button.is_displayed())
         self.wait.until(
             expected_conditions.element_to_be_clickable(login_button)
         )
+        logging.info('True')
+        self.wait.until(
+            expected_conditions.visibility_of_element_located(login_button)
+        )
+        logging.info('True')
         login_button.click()
 
     def handle_cookies(self) -> None:

@@ -1,3 +1,4 @@
+import logging
 import time
 from abc import abstractmethod, ABC
 
@@ -21,21 +22,21 @@ class BaseScrappingService(ABC):
 
     def get_vacancies(self) -> list[Vacancy]:
         self.set_website()
-
+        logging.info('Website set')
         time.sleep(self.sleep)
 
         self.login_to_website()
-
+        logging.info('Logged in to website')
         time.sleep(self.sleep)
 
         self.handle_cookies()
-
+        logging.info('Cookies handled')
         time.sleep(self.sleep)
 
         self.apply_filters()
-
+        logging.info('Filters Applied')
         time.sleep(self.sleep)
-
+        logging.info('Navigation starting')
         return self.navigate_all_pages()
 
     @abstractmethod
@@ -64,11 +65,12 @@ class BaseScrappingService(ABC):
         while True and retry_count < Variables.MAX_RETRY_COUNT:
             try:
                 return self.wait.until(expected_conditions.presence_of_element_located((by, value)))
-            except (TimeoutException, NoSuchElementException):
+            except (TimeoutException, NoSuchElementException) as ex:
                 if retry_count > Variables.MAX_RETRY_COUNT:
-                    print("Couldn't find the element by", by, "of", value)
+                    logging.warning("Couldn't find the element by", by, "of", value)
                     raise UnsafeElementException
                 retry_count += 1
+                logging.warning('{} happened, retry count = {}', ex.__name__, retry_count)
                 self.driver.refresh()
 
     @abstractmethod
