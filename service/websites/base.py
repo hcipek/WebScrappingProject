@@ -70,7 +70,7 @@ class BaseScrappingService(ABC):
                     logging.warning("Couldn't find the element by", by, "of", value)
                     raise UnsafeElementException
                 retry_count += 1
-                logging.warning('{} happened, retry count = {}', ex.__name__, retry_count)
+                logging.warning('{} happened, retry count = {}'.format(ex.__name__, retry_count))
                 self.driver.refresh()
 
     @abstractmethod

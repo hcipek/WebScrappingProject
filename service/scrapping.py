@@ -47,7 +47,7 @@ def start_scrapping():
             vacancies_repository.insert_vacancies(vacancies)
         except (ElementClickInterceptedException, NoSuchElementException, TimeoutException):
             is_saved = driver.save_screenshot('error.png')
-            logging.warning('Screenshot is saved = {}', is_saved)
+            logging.warning('Screenshot is saved = {}'.format(is_saved))
             content_html = handle_error_context(html_context=content_html, screenshot_address='./error.png',
                                                 service_name=service.get_name())
     # TODO : Comment this when you need to run it on locally
