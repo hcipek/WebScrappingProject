@@ -25,12 +25,12 @@ class BaseScrappingService(ABC):
         logging.info('Website set')
         time.sleep(self.sleep)
 
-        self.login_to_website()
-        logging.info('Logged in to website')
-        time.sleep(self.sleep)
-
         self.handle_cookies()
         logging.info('Cookies handled')
+        time.sleep(self.sleep)
+
+        self.login_to_website()
+        logging.info('Logged in to website')
         time.sleep(self.sleep)
 
         self.apply_filters()
