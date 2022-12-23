@@ -18,7 +18,7 @@ from variables import ScrappingVariables as Variables
 
 
 def start_scrapping():
-    display = Display(visible=False, size=(800, 600))
+    display = Display()
     display.start()
 
     options = Options()

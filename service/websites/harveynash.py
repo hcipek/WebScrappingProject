@@ -52,6 +52,10 @@ class HarveyNashScrappingService(BaseScrappingService):
 
         for option in job_filter_options:
             if option.text == Variables.FILTER_SECTOR_OPTION_NAME:
+                print(option.accessible_name)
+                self.wait.until(
+                    expected_conditions.element_to_be_clickable(option)
+                )
                 option.click()
                 time.sleep(1)
                 sector_option_display_ul = option.find_element(By.TAG_NAME, Tags.UL)
