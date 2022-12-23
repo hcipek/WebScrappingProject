@@ -1,5 +1,7 @@
 from datetime import datetime
 
+from pyvirtualdisplay import Display
+
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
@@ -16,8 +18,11 @@ from variables import ScrappingVariables as Variables
 
 
 def start_scrapping():
+    display = Display(visible=False, size=(800, 600))
+    display.start()
+
     options = Options()
-    options.add_argument('--no-sandbox')
+    # options.add_argument('--no-sandbox')
     # options.add_argument('--headless')
     # options.add_argument('--disable-dev-shm-usage')
 
@@ -38,6 +43,8 @@ def start_scrapping():
         content_html = handle_mail_context(html_context=content_html, item_list=vacancies,
                                            service_name=service.get_name())
         vacancies_repository.insert_vacancies(vacancies)
+
+    display.stop()
 
     mail_service = MailService()
     mail_service.send_mail(Variables.MAIL_SUBJECT.format(datetime.today().strftime('%d-%m-%Y')),
