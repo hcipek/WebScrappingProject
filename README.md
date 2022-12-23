@@ -2,6 +2,7 @@
 
 Install Python 3
 Install xvfb
+Install Chrome
 Install Pip
 - Install selenium
 - Install pyvirtualdisplay
