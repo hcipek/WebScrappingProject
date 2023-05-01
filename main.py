@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import logging
 
 from service.scrapping import start_scrapping
