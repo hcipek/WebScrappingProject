@@ -207,7 +207,7 @@ class MijnFreelanceScrappingService(BaseScrappingService):
                 logging.info('Checking pagination next button...')
                 next_button: WebElement = self.driver. \
                     find_element(By.CSS_SELECTOR, Variables.PAGINATION_NEXT_CSS_SELECTOR)
-                logging.info('found', next_button.get_attribute(Attributes.HREF))
+                logging.info('found: %s', next_button.get_attribute(Attributes.HREF))
             except NoSuchElementException:
                 logging.warning('Pagination Next was not found.')
                 break
