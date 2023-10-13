@@ -78,7 +78,7 @@ class MijnFreelanceScrappingService(BaseScrappingService):
         logging.info('handle cookies started')
         cookie_root = self.wait.until(
             expected_conditions.presence_of_element_located(
-                (By.ID, Variables.COOKIE_CONTAINER_ROOT_ID))
+                (By.CSS_SELECTOR, Variables.COOKIE_CONTAINER_ROOT_CSS_SELECTOR))
         )
         all_cookie_buttons = cookie_root.find_elements(By.TAG_NAME, Tags.BUTTON)
 
